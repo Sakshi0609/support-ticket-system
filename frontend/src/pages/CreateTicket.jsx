@@ -77,7 +77,7 @@ function CreateTicket() {
             value={formData.pnr}
             onChange={handleChange}
             placeholder="Enter PNR"
-            required
+            
           />
         </div>
 

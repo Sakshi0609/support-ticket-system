@@ -1,78 +1,135 @@
 import { useState } from "react";
-
 import "../assets/css/Login.css";
 import { useNavigate, Link } from "react-router-dom";
 
-
 function Login() {
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loginError, setLoginError] = useState("");
 
-const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  setEmailError("");
-  setPasswordError("");
+    setEmailError("");
+    setPasswordError("");
+    setLoginError("");
 
-  let isValid = true;
+    let isValid = true;
 
-  if (!email.trim()) {
-    setEmailError("Email is required");
-    isValid = false;
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    setEmailError("Please enter a valid email address");
-    isValid = false;
-  }
+    // Email validation
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailError("Please enter a valid email address");
+      isValid = false;
+    }
 
-  if (!password) {
-    setPasswordError("Password is required");
-    isValid = false;
-  } else if (password.length < 6) {
-    setPasswordError("Password must be at least 6 characters");
-    isValid = false;
-  }
+    // Password validation
+    if (!password) {
+      setPasswordError("Password is required");
+      isValid = false;
+    } else if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters");
+      isValid = false;
+    }
 
-  if (!isValid) {
-    return;
-  }
+    // Stop if frontend validation fails
+    if (!isValid) {
+      return;
+    }
 
-  navigate("/dashboard");
-};
+    // Login API
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.trim(),
+            password: password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      // Backend error
+      if (!response.ok) {
+        setLoginError(data.message || "Login failed");
+        return;
+      }
+
+      // Login successful
+      alert("Login successful!");
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoginError("Unable to connect to server");
+    }
+  };
 
   return (
     <div className="login-page">
       <div className="login-card">
 
         <div className="form-header">
-        <h1>Support Ticket System</h1>
-        <p>Welcome back! Please login to your account.</p>
+          <h1>Support Ticket System</h1>
+          <p>Welcome back! Please login to your account.</p>
         </div>
+
         <form onSubmit={handleSubmit}>
 
+          {/* Email */}
           <div className="form-group">
-            <label>Email Address: </label>
+            <label>Email Address:</label>
+
             <input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
+
+            {emailError && (
+              <p className="error-message">
+                {emailError}
+              </p>
+            )}
           </div>
 
+          {/* Password */}
           <div className="form-group">
-            <label>Password: </label>
+            <label>Password:</label>
+
             <input
               type="password"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
+
+            {passwordError && (
+              <p className="error-message">
+                {passwordError}
+              </p>
+            )}
+
+            {/* Backend login error */}
+            {loginError && (
+              <p className="login-error">
+                {loginError}
+              </p>
+            )}
           </div>
 
           <div className="forgot-password">

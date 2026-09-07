@@ -45,7 +45,7 @@ export const getTickets = async (req, res) => {
       filter.priority = priority;
     }
 
-    const tickets = await Ticket.find(filter);
+   const tickets = await Ticket.find(filter).sort({ createdAt: -1 });
 
     res.status(200).json(tickets);
 

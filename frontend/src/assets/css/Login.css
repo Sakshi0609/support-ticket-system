@@ -123,7 +123,13 @@ body {
 .login-button:hover {
   background: #1d4ed8;
 }
-
+/* error message */
+.error-message,
+.login-error {
+  color: red;
+  font-size: 14px;
+  margin-top: 6px;
+}
 /* Register */
 
 .register-section {
