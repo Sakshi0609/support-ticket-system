@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import "../assets/css/Login.css";
+import { useNavigate, Link } from "react-router-dom";
+
 
 function Login() {
   const navigate = useNavigate();
@@ -86,7 +88,7 @@ const handleSubmit = (e) => {
         <div className="register-section">
           <p>
             Don't have an account?
-            <a href="/register"> Register</a>
+            <Link to="/register"> Register</Link>
           </p>
         </div>
 

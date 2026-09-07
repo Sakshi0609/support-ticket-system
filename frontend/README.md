@@ -15,7 +15,7 @@ A full-stack support ticket management system built with React (frontend) and No
 - Filter by status (Open / In Progress / Closed) and priority (Low / Medium / High)
 - Update ticket details and status
 - Delete tickets
-- Sidebar navigation layout
+
 
 ## Project Structure
 
@@ -36,8 +36,6 @@ Support Ticket System (InternTask)/
 └── frontend/
     ├── src/
     │   ├── components/
-    │   │   ├── Sidebar.jsx
-    │   │   └── Layout.jsx
     │   ├── pages/
     │   │   ├── Login.jsx
     │   │   ├── Dashboard.jsx
